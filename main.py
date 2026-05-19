@@ -138,13 +138,17 @@ while True:
             if evento.type == pygame.KEYDOWN:
 
                 if evento.key == pygame.K_UP or evento.key == pygame.K_w:
+                    tocar_botao()
                     opcao_menu = (opcao_menu - 1) % 3 # 3 pois são 3 botoes
 
                 elif evento.key == pygame.K_DOWN or evento.key == pygame.K_s: # Adicionei o DOWN para você conseguir navegar pela setinha tbm
                     opcao_menu = (opcao_menu + 1) % 3
+                    tocar_botao()
 
                 elif evento.key == pygame.K_RETURN or evento.key == pygame.K_KP_ENTER: # Navegação no menu usando as setinhas
+                
                     if opcao_menu == 0:  # primeiro botao
+                        tocar_botao()
                         sistema_pontos.resetar_partida()    
                         desafio = logic.obter_novo_desafio(sistema_pontos.combo)
                         tempo_restante = sistema_pontos.calcular_tempo_limite()
@@ -152,8 +156,11 @@ while True:
                         deslocamento_x = 0
                         estado_Atual = jogando
                     elif opcao_menu == 1:  # segundo botao
+                        tocar_botao()
                         estado_Atual = OPCOES
-                    elif opcao_menu == 2:  # terceiro botao
+                    elif opcao_menu == 2:
+                          # terceiro botao
+                        tocar_botao()
                         pygame.quit()
                         sys.exit()
 
@@ -161,18 +168,25 @@ while True:
             elif evento.type == pygame.MOUSEMOTION:
                 pos = pygame.mouse.get_pos()
                 acao = obter_botao_clicado(pos, tela)
-                
-                if acao == "play":
-                    opcao_menu = 0
+                opcao_anterior = opcao_menu
+
+            
+                if acao == "play":                   
+                    opcao_menu = 0                  
                 elif acao == "config":
-                    opcao_menu = 1
+                    opcao_menu = 1                    
                 elif acao == "quit":
-                    opcao_menu = 2
+                    opcao_menu = 2      
+
+                if opcao_menu != opcao_anterior:
+                 tocar_botao()
+
 
             elif evento.type == pygame.MOUSEBUTTONDOWN: # Navegação no menu usando o mouse
                 pos = pygame.mouse.get_pos()
                 acao = obter_botao_clicado(pos,tela)
                 if acao == "play":
+                    tocar_botao()
                     sistema_pontos.resetar_partida()
                     desafio = logic.obter_novo_desafio(sistema_pontos.combo)
                     tempo_restante = sistema_pontos.calcular_tempo_limite()
@@ -180,8 +194,10 @@ while True:
                     deslocamento_y = 0
                     deslocamento_x = 0
                 elif acao == "config":
+                    tocar_botao()
                     estado_Atual = OPCOES    
                 elif acao == "quit":
+                    tocar_botao()
                     pygame.quit()
                     sys.exit()
 
@@ -189,15 +205,19 @@ while True:
             if evento.type == pygame.KEYDOWN:
 
                 if evento.key == pygame.K_UP or evento.key == pygame.K_w:
+                    tocar_botao()
                     opcao_opcoes = (opcao_opcoes - 1) % len(resolucoes)
 
                 elif evento.key == pygame.K_DOWN or evento.key == pygame.K_s:
+                    tocar_botao()
                     opcao_opcoes = (opcao_opcoes + 1) % len(resolucoes)
 
                 elif evento.key == pygame.K_RETURN or evento.key == pygame.K_KP_ENTER:
+                    tocar_botao()
                     aplicar_resolucao(resolucoes[opcao_opcoes])
 
                 elif evento.key == pygame.K_ESCAPE:
+                    tocar_botao()
                     estado_Atual = menu
 
         # JOGO
