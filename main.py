@@ -103,7 +103,10 @@ def desenhar_texto(texto, cor, y_offset, fonte_base, max_largura=750):
 # Loop principal
 while True:
     if estado_Atual == intro:
+        canal_intro = som_intro.play()
+        tocar_intro()
         deve_continuar = exibir_video_intro(tela, "assets/videos/intro_teste.mp4")
+        canal_intro.stop()
         if deve_continuar:
             estado_Atual = menu
         else:
