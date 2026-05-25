@@ -7,6 +7,7 @@ from src.logic.pontuacao import GerenciadorPontuacao
 from src.ui.cores import * # Para organizar a interface
 from src.ui.menus import exibir_menu_principal, exibir_game_over, exibir_video_intro, obter_botao_clicado, escala_tela
 from src.ui.tela_jogo import exibir_gameplay, escalonar_animacao
+from src.content.easter_eggs import *
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CAMINHO_FONTE = os.path.join(BASE_DIR, "assets", "fonts", "PressStart2P-Regular.ttf")
@@ -107,6 +108,19 @@ def desenhar_texto(texto, cor, y_offset, fonte_base, max_largura=750):
     rect = surface.get_rect(center=(largura // 2, altura // 2 + y_offset))
     tela.blit(surface, rect)
 
+CONFIG_EASTER_EGGS = [
+    {"palavra": "jequiti", "img": "assets/images/unicornio.png", "som": None},
+    {"palavra": "caneta",   "img": "assets/images/manoel.png",     "som" : tocar_manoel},
+    {"palavra": "mide",   "img": "assets/images/lobo.png",     "som": tocar_mide},
+    {"palavra": "cinema",  "img": "assets/images/cinema.png",    "som": None},
+    {"palavra": "zap",  "img": "assets/images/zap.png",    "som": tocar_zap},
+]
+
+gerenciador_eggs = GerenciadorEasterEggs()
+for dados in CONFIG_EASTER_EGGS:
+    gerenciador_eggs.adicionar(
+        EasterEggTeclado(dados["palavra"], dados["img"], dados["som"]))
+
 
 # Loop principal
 while True:
@@ -142,6 +156,8 @@ while True:
         if evento.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        gerenciador_eggs.processar_eventos(evento)
 
         # MENU
         if estado_Atual == menu:
@@ -344,6 +360,9 @@ while True:
     elif estado_Atual == REGISTRANDO:
         from src.ui.menus import exibir_registro_recorde
         exibir_registro_recorde(tela, desenhar_texto, fontes_jogo, nome_input)
+    
+    gerenciador_eggs.atualizar_e_desenhar(tela)
+
 
     pygame.display.flip()
     relogio.tick(60)
