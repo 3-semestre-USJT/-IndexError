@@ -13,6 +13,14 @@ CAMINHO_FONTE = os.path.join(BASE_DIR, "assets", "fonts", "PressStart2P-Regular.
 
 pygame.init()
 
+try:
+    pygame.mixer.init()
+    print("Som iniciado")
+except pygame.error:
+    print("Sem dispositivo de áudio")
+
+iniciar_sons()
+
 # Tela e FPS
 largura, altura = 1280, 720
 tela = pygame.display.set_mode((largura, altura))
@@ -103,10 +111,10 @@ def desenhar_texto(texto, cor, y_offset, fonte_base, max_largura=750):
 # Loop principal
 while True:
     if estado_Atual == intro:
-        canal_intro = som_intro.play()
-        tocar_intro()
+        canal_intro = tocar_intro() 
         deve_continuar = exibir_video_intro(tela, "assets/videos/intro_teste.mp4")
-        canal_intro.stop()
+        if canal_intro:
+            canal_intro.stop()
         if deve_continuar:
             estado_Atual = menu
         else:
