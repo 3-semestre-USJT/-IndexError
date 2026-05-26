@@ -7,9 +7,11 @@ som_erro = None
 som_manoel = None
 som_mide = None
 som_zap = None
+som_menu = None
+som_gameplay = None
 
 def iniciar_sons():
-    global som_botao, som_intro, som_acerto, som_erro, som_manoel, som_mide, som_zap
+    global som_botao, som_intro, som_acerto, som_erro, som_manoel, som_mide, som_zap, som_menu, som_gameplay
 
     try:
         som_botao = pygame.mixer.Sound("assets/sounds/botao.mp3")
@@ -19,6 +21,8 @@ def iniciar_sons():
         som_manoel = pygame.mixer.Sound("assets/sounds/manoel.mp3")
         som_mide = pygame.mixer.Sound("assets/sounds/mide.mp3")
         som_zap = pygame.mixer.Sound("assets/sounds/zap.mp3")
+        som_menu = pygame.mixer.Sound("assets/sounds/musica_menu.mp3")
+        som_gameplay = pygame.mixer.Sound("assets/sounds/musica_gameplay.mp3")
     except pygame.error:
         pass
 
@@ -30,9 +34,25 @@ def tocar_erro():
     if som_erro:
         som_erro.play()
 
+def parar_erro():
+    if som_erro:
+        som_erro.stop()
+
+def tocar_menu():
+     pygame.mixer.Channel(0).set_volume(0.8)
+     if not pygame.mixer.Channel(0).get_busy():
+       pygame.mixer.Channel(0).play(som_menu, loops=-1)
+
+def parar_menu():
+     pygame.mixer.Channel(0).stop()
+
 def tocar_intro():
     if som_intro:
         som_intro.play()
+
+def parar_intro():
+    if som_intro:
+        som_intro.stop()
 
 def tocar_botao():
     if som_botao:
@@ -49,3 +69,10 @@ def tocar_mide():
 def tocar_zap():
     if som_zap:
         som_zap.play()
+
+def tocar_gameplay():
+        if not pygame.mixer.Channel(1).get_busy():
+            pygame.mixer.Channel(1).play(som_gameplay, loops=-1)
+
+def parar_gameplay():
+     pygame.mixer.Channel(1).stop()

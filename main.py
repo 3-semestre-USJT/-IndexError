@@ -18,6 +18,8 @@ try:
     pygame.mixer.init()
     print("Som iniciado")
 except pygame.error:
+    os.environ['SDL_AUDIODRIVER'] = 'dummy'
+    pygame.mixer.init()
     print("Sem dispositivo de áudio")
 
 iniciar_sons()
@@ -121,8 +123,6 @@ for dados in CONFIG_EASTER_EGGS:
     gerenciador_eggs.adicionar(
         EasterEggTeclado(dados["palavra"], dados["img"], dados["som"]))
 
-
-# Loop principal
 while True:
     if estado_Atual == intro:
         canal_intro = tocar_intro() 
@@ -131,11 +131,11 @@ while True:
             canal_intro.stop()
         if deve_continuar:
             estado_Atual = menu
+            parar_intro()
         else:
             pygame.quit()
             sys.exit()
             continue
-    
     # Logica do movimento do barco
     # Faz o deslocamento atual chegar perto do alvo (Movimento de IDA)
     deslocamento_x += (alvo_x - deslocamento_x) * suavidade_ida
@@ -152,6 +152,19 @@ while True:
     # ==== Desenha a imagem de Fundo ========
     tela.blit(imagem_fundo,(0,0))
 
+    gameplay_musica_tocando = False
+
+    if estado_Atual == jogando:
+        if not gameplay_musica_tocando:
+            tocar_gameplay()
+            gameplay_musica_tocando = True
+
+    musica_menu_tocando = False
+    if estado_Atual == menu:
+        if not musica_menu_tocando:
+            tocar_menu()
+            musica_menu_tocando = True
+
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             pygame.quit()
@@ -161,7 +174,6 @@ while True:
 
         # MENU
         if estado_Atual == menu:
-            
             if evento.type == pygame.KEYDOWN:
 
                 if evento.key == pygame.K_UP or evento.key == pygame.K_w:
@@ -182,6 +194,7 @@ while True:
                         deslocamento_y = 0
                         deslocamento_x = 0
                         estado_Atual = jogando
+                        parar_menu()
                     elif opcao_menu == 1:  # segundo botao
                         tocar_botao()
                         estado_Atual = OPCOES
@@ -190,7 +203,6 @@ while True:
                         tocar_botao()
                         pygame.quit()
                         sys.exit()
-
                 # Se o mouse estiver sobre um botão, a mãozinha pula para ele
             elif evento.type == pygame.MOUSEMOTION:
                 pos = pygame.mouse.get_pos()
@@ -278,6 +290,7 @@ while True:
                         else:
                             estado_Atual = GAME_OVER
                         tocar_erro()
+                        parar_gameplay()
 
          # GAME OVER
         elif estado_Atual == GAME_OVER:
@@ -292,6 +305,7 @@ while True:
 
                 elif evento.key == pygame.K_ESCAPE:
                     estado_Atual = menu
+                    parar_erro()
 
         # REGISTRO
         elif estado_Atual == REGISTRANDO:
