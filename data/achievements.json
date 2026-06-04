@@ -1,0 +1,86 @@
+{
+    "combo_500": {
+        "id": "combo_500",
+        "nome": "Combo Mestre",
+        "descricao": "Alcan\u00e7ar 500 de combo em uma partida",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931740"
+    },
+    "combo_1000": {
+        "id": "combo_1000",
+        "nome": "Combo Supremo",
+        "descricao": "Alcan\u00e7ar 1000 de combo em uma partida",
+        "desbloqueada": false,
+        "data_desbloqueio": null
+    },
+    "velocista": {
+        "id": "velocista",
+        "nome": "Velocista",
+        "descricao": "Completar um desafio em menos de 2 segundos",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931747"
+    },
+    "recordista": {
+        "id": "recordista",
+        "nome": "Recordista",
+        "descricao": "Bater o high score",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:45:55.755756"
+    },
+    "20_acertos": {
+        "id": "20_acertos",
+        "nome": "Veterano",
+        "descricao": "Acertar 20 desafios em uma partida",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931750"
+    },
+    "50_acertos": {
+        "id": "50_acertos",
+        "nome": "Lenda",
+        "descricao": "Acertar 50 desafios em uma partida",
+        "desbloqueada": false,
+        "data_desbloqueio": null
+    },
+    "primeiro_recorde": {
+        "id": "primeiro_recorde",
+        "nome": "Primeiro Recorde",
+        "descricao": "Salvar o primeiro recorde",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931752"
+    },
+    "5_partidas": {
+        "id": "5_partidas",
+        "nome": "Gamer Casual",
+        "descricao": "Completar 5 partidas",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931753"
+    },
+    "50_partidas": {
+        "id": "50_partidas",
+        "nome": "Gamer Dedicado",
+        "descricao": "Completar 50 partidas",
+        "desbloqueada": false,
+        "data_desbloqueio": null
+    },
+    "sem_erros_10": {
+        "id": "sem_erros_10",
+        "nome": "Perfei\u00e7\u00e3o",
+        "descricao": "Acertar 10 desafios sem errar",
+        "desbloqueada": true,
+        "data_desbloqueio": "2026-06-03T20:44:39.931754"
+    },
+    "dificil_100_pontos": {
+        "id": "dificil_100_pontos",
+        "nome": "Dificuldade Extrema",
+        "descricao": "Alcan\u00e7ar 100 pontos em Dif\u00edcil",
+        "desbloqueada": false,
+        "data_desbloqueio": null
+    },
+    "powerup_10": {
+        "id": "powerup_10",
+        "nome": "Coletor",
+        "descricao": "Usar 10 powerups em partidas",
+        "desbloqueada": false,
+        "data_desbloqueio": null
+    }
+}

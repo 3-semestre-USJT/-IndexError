@@ -1,0 +1,326 @@
+[
+    {
+        "timestamp": "2026-06-04T19:31:24.125500",
+        "score": 2100,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 5.210524559020996,
+        "acertos": 28,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-04T19:07:30.840197",
+        "score": 22700,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 53.10336232185364,
+        "acertos": 36,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-04T18:58:39.061513",
+        "score": 2000,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 13.29316520690918,
+        "acertos": 13,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-04T18:58:12.944038",
+        "score": 19900,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 40.77817988395691,
+        "acertos": 33,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-04T18:28:36.540361",
+        "score": 1200,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 28.53085160255432,
+        "acertos": 7,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-04T18:27:38.518649",
+        "score": 13700,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 32.046175479888916,
+        "acertos": 27,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T23:40:23.355982",
+        "score": 900,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 32.360228300094604,
+        "acertos": 7,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T23:35:17.183099",
+        "score": 3200,
+        "combo_maximo": 0,
+        "dificuldade": "DIF\u00cdCIL",
+        "duracao_segundos": 14.593912839889526,
+        "acertos": 17,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T23:21:40.353670",
+        "score": 400,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 5.560555696487427,
+        "acertos": 4,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T23:10:17.120214",
+        "score": 31100,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 53.18618869781494,
+        "acertos": 41,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T23:02:55.231742",
+        "score": 47600,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 43.84781289100647,
+        "acertos": 40,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:53:41.033410",
+        "score": 15900,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 30.298062562942505,
+        "acertos": 23,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:37:19.957018",
+        "score": 8200,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 27.676950216293335,
+        "acertos": 20,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:28:33.947341",
+        "score": 8300,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 31.88450574874878,
+        "acertos": 20,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:18:10.916311",
+        "score": 10000,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 33.33635663986206,
+        "acertos": 24,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:10:29.207339",
+        "score": 23400,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 57.26951241493225,
+        "acertos": 30,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:09:26.693748",
+        "score": 1700,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 27.094976902008057,
+        "acertos": 12,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T22:01:49.157618",
+        "score": 200,
+        "combo_maximo": 2,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 23.528841972351074,
+        "acertos": 2,
+        "erros": 1
+    },
+    {
+        "timestamp": "2026-06-03T21:57:36.675422",
+        "score": 100,
+        "combo_maximo": 1,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 24.022079706192017,
+        "acertos": 1,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:51:45.637991",
+        "score": 12200,
+        "combo_maximo": 18,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 37.10111474990845,
+        "acertos": 26,
+        "erros": 2
+    },
+    {
+        "timestamp": "2026-06-03T21:51:01.792257",
+        "score": 500,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 28.492607831954956,
+        "acertos": 5,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:43:32.744471",
+        "score": 200,
+        "combo_maximo": 2,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 27.281907320022583,
+        "acertos": 2,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:43:08.022816",
+        "score": 0,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 2.5602619647979736,
+        "acertos": 0,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:36:27.406559",
+        "score": 13200,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 39.845245122909546,
+        "acertos": 28,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:34:25.012237",
+        "score": 0,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 14.99828028678894,
+        "acertos": 0,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:34:05.545145",
+        "score": 0,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 14.996360063552856,
+        "acertos": 0,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:27:41.350618",
+        "score": 3900,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 2.8346824645996094,
+        "acertos": 13,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:27:33.863660",
+        "score": 1300,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 3.711186408996582,
+        "acertos": 7,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:16:13.186938",
+        "score": 0,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 59.981186628341675,
+        "acertos": 0,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:13:30.456835",
+        "score": 0,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 34.020360469818115,
+        "acertos": 0,
+        "erros": 0
+    },
+    {
+        "timestamp": "2026-06-03T21:13:13.558384",
+        "score": 200,
+        "combo_maximo": 0,
+        "dificuldade": "NORMAL",
+        "duracao_segundos": 17.12191605567932,
+        "acertos": 2,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:05:20.711034",
+        "score": 11100,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 30.131471157073975,
+        "acertos": 25,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T21:01:10.134098",
+        "score": 1900,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 16.62562870979309,
+        "acertos": 9,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T20:47:38.422153",
+        "score": 13000,
+        "combo_maximo": 0,
+        "dificuldade": "DIF\u00cdCIL",
+        "duracao_segundos": 44.4757604598999,
+        "acertos": 43,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T20:46:27.794996",
+        "score": 38100,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 71.45513391494751,
+        "acertos": 34,
+        "erros": 3
+    },
+    {
+        "timestamp": "2026-06-03T20:27:06.315816",
+        "score": 8700,
+        "combo_maximo": 0,
+        "dificuldade": "F\u00c1CIL",
+        "duracao_segundos": 61.78034019470215,
+        "acertos": 21,
+        "erros": 3
+    }
+]

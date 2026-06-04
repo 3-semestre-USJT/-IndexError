@@ -1,0 +1,44 @@
+{
+    "FACIL": [
+        {
+            "nome": "AAA",
+            "pontos": 22700
+        },
+        {
+            "nome": "---",
+            "pontos": 0
+        },
+        {
+            "nome": "---",
+            "pontos": 0
+        }
+    ],
+    "NORMAL": [
+        {
+            "nome": "AAQ",
+            "pontos": 47600
+        },
+        {
+            "nome": "FAH",
+            "pontos": 38100
+        },
+        {
+            "nome": "MEU",
+            "pontos": 31100
+        }
+    ],
+    "DIFICIL": [
+        {
+            "nome": "---",
+            "pontos": 0
+        },
+        {
+            "nome": "---",
+            "pontos": 0
+        },
+        {
+            "nome": "---",
+            "pontos": 0
+        }
+    ]
+}

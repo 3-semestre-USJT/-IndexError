@@ -1,0 +1,10 @@
+# Engine Gráfica do Jogo
+pygame>=2.5.0
+pip install pygame-ce
+
+# Ferramenta para criação de testes automatizados 
+pytest>=8.0.0
+
+# Lê o video frame a frame e os transforma em imagens para o Pygame
+OpenCV>= 4.13.0.92
+pip install opencv-python
