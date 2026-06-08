@@ -92,21 +92,9 @@ def exibir_gameplay(tela, desenhar_texto_func, fontes, desafio, sistema_pontos, 
     offset_combo = offset_base - 560 # (-310 era o que a gente estava usando pra alinhar)
     offset_tempo = offset_base + 50  # (300 era o que a gente estava usando para alinhar)
 
-    # Mostrar nível na tela principal
-    if nivel_jogador is not None:
-        desenhar_texto_func(f"NÍVEL: {nivel_jogador}", (255, 215, 0), offset_nivel, fontes['pequena'])
-        # Barra de XP pequena
-        if xp_percentual is not None:
-            largura_barra = 100
-            altura_barra = 5
-            x_barra = largura_tela // 2 - largura_barra // 2
-            y_barra = altura_tela // 2 + offset_nivel + 20
-            pygame.draw.rect(tela, (50, 50, 50), (x_barra, y_barra, largura_barra, altura_barra))
-            pygame.draw.rect(tela, (255, 215, 0), (x_barra, y_barra, int(largura_barra * xp_percentual / 100), altura_barra))
-
+    # Mostrar desafio e tempo
+    
     desenhar_texto_func(desafio["texto"], BRANCO, offset_texto, fontes['grande'], max_largura=largura_limite)
-    desenhar_texto_func(f"Score: {sistema_pontos.score}", VERDE_VIBRANTE, offset_score, fontes['pequena'])
-    desenhar_texto_func(f"Combo: {sistema_pontos.combo}x (Mult: {sistema_pontos.multiplicador}x)", AMARELO, offset_combo, fontes['pequena'])
     desenhar_texto_func(f"Tempo: {tempo_restante:.1f}s", VERMELHO_VIVO, offset_tempo, fontes['pequena'])
 
     # Mostrar opções removidas visualmente
