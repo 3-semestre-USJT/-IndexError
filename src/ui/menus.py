@@ -204,7 +204,7 @@ def botao_escalonado(tela):
     espacamento = altura_tela * 0.10
 
     y_play = y_inicial
-    y_tutorial = y_inicial + espacamento
+    y_tutorial = y_inicial + (espacamento * 1.17)
     y_time_attack = y_inicial + (espacamento * 2)
     y_config = y_inicial + (espacamento * 3)
     y_quit = y_inicial + (espacamento * 4)
