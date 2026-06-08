@@ -44,7 +44,7 @@ def escalonar_animacao(lista_imagens, largura_janela, proporcao=0.20):
         
     return novas_imagens
 
-def exibir_gameplay(tela, desenhar_texto_func, fontes, desafio, sistema_pontos, tempo_restante, imagem_gameplay, animacao_perso, deslocamento_perso):
+def exibir_gameplay(tela, desenhar_texto_func, fontes, desafio, sistema_pontos, tempo_restante, imagem_gameplay, animacao_perso, deslocamento_perso, opcoes_removidas=None, nivel_jogador=None, xp_percentual=None):
     
     largura_tela, altura_tela = tela.get_size()
     tela.blit(imagem_gameplay, (0,0)) # Desenha o fundo da gameplay
@@ -87,11 +87,19 @@ def exibir_gameplay(tela, desenhar_texto_func, fontes, desafio, sistema_pontos, 
     largura_limite = int(largura_tela * 0.8) # Usa proporcional ao tamanho da tela (80%)
     offset_base = 250 if altura_tela >= 720 else 180 # Diminui o tamanho se a tela for pequena
     offset_texto = offset_base
+    offset_nivel = offset_base - 580
     offset_score = offset_base - 520 # (-270 era o que a gente estava usando pra alinhar) 
     offset_combo = offset_base - 560 # (-310 era o que a gente estava usando pra alinhar)
     offset_tempo = offset_base + 50  # (300 era o que a gente estava usando para alinhar)
 
+    # Mostrar desafio e tempo
+    
     desenhar_texto_func(desafio["texto"], BRANCO, offset_texto, fontes['grande'], max_largura=largura_limite)
-    desenhar_texto_func(f"Score: {sistema_pontos.score}", VERDE_VIBRANTE, offset_score, fontes['pequena'])
-    desenhar_texto_func(f"Combo: {sistema_pontos.combo}x (Mult: {sistema_pontos.multiplicador}x)", AMARELO, offset_combo, fontes['pequena'])
     desenhar_texto_func(f"Tempo: {tempo_restante:.1f}s", VERMELHO_VIVO, offset_tempo, fontes['pequena'])
+
+    # Mostrar opções removidas visualmente
+    if opcoes_removidas:
+        offset_removidas = offset_base + 100
+        for opcao in opcoes_removidas:
+            desenhar_texto_func(f"[X] {opcao}", VERMELHO_VIVO, offset_removidas, fontes['pequena'])
+            offset_removidas += 25
