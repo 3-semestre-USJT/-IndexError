@@ -69,31 +69,47 @@ def exibir_menu_principal(tela, desenhar_texto_func, fontes, opcao_selecionada):
     quit_button.exibir_botao(tela)
     
     # Lista de botões para posicionamento da mão seletora
-    botoes = [play_button, tutorial_button, time_attack_button, config_button, quit_button]
+    botoes_lista = [play_button, tutorial_button, time_attack_button, config_button, quit_button]
     
     # Posicionar a mão seletora ao lado do botão selecionado
-    if opcao_selecionada < len(botoes):
-        botao_selecionado = botoes[opcao_selecionada]
+    if opcao_selecionada < len(botoes_lista):
+        botao_selecionado = botoes_lista[opcao_selecionada]
         x_mao = botao_selecionado.rect.right + 10
         y_mao = botao_selecionado.rect.centery - img_mao.get_height() // 2
         tela.blit(img_mao, (x_mao, y_mao))
 
-    # Janelinha de desafios diários (canto inferior direito)
+    # Janelinha de desafios diários (canto inferior direito) - Estilo Placa de Madeira
     largura_tela, altura_tela = tela.get_size()
     largura_janela = 320
     altura_janela = 140
     x_janela = largura_tela - largura_janela - 20
     y_janela = altura_tela - altura_janela - 20
 
-    # Fundo com gradiente simulado e bordas
-    pygame.draw.rect(tela, (15, 25, 50), (x_janela, y_janela, largura_janela, altura_janela))
-    pygame.draw.rect(tela, (50, 120, 200), (x_janela, y_janela, largura_janela, altura_janela), 3)
-    pygame.draw.rect(tela, (80, 160, 255), (x_janela + 4, y_janela + 4, largura_janela - 8, altura_janela - 8), 1)
+    try:
+        # Tenta carregar a imagem da placa de madeira
+        img_placa = pygame.image.load("assets/images/placa_desafios.png").convert_alpha()
+        img_placa = pygame.transform.smoothscale(img_placa, (largura_janela, altura_janela))
+        tela.blit(img_placa, (x_janela, y_janela))
+    except (pygame.error, FileNotFoundError):
+        # Fallback de segurança: se a imagem não existir, desenha uma placa rústica com código
+        MARROM_BASE = (139, 90, 43)
+        MARROM_ESCURO = (92, 58, 33)
+        pygame.draw.rect(tela, MARROM_BASE, (x_janela, y_janela, largura_janela, altura_janela))
+        pygame.draw.rect(tela, MARROM_ESCURO, (x_janela, y_janela, largura_janela, altura_janela), 4)
+        # Linhas de detalhe na madeira
+        pygame.draw.line(tela, MARROM_ESCURO, (x_janela + 10, y_janela + 30), (x_janela + largura_janela - 10, y_janela + 30), 2)
+        pygame.draw.line(tela, MARROM_ESCURO, (x_janela + 10, y_janela + 125), (x_janela + largura_janela - 10, y_janela + 125), 2)
+
+    # Cores de texto combinando com madeira
+    BEGE_CLARO = (245, 222, 179)
+    DOURADO_ESCURO = (218, 165, 32)
 
     # Título com destaque
     fonte_titulo = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 14)
-    texto_titulo = fonte_titulo.render("DESAFIOS DIÁRIOS", True, (255, 220, 100))
-    tela.blit(texto_titulo, (x_janela + 15, y_janela + 8))
+    texto_titulo = fonte_titulo.render("DESAFIOS DIÁRIOS", True, DOURADO_ESCURO)
+    # Centralizando o título na placa
+    texto_rect = texto_titulo.get_rect(center=(x_janela + largura_janela // 2, y_janela + 15))
+    tela.blit(texto_titulo, texto_rect)
 
     # Desafios do dia (baseados na data)
     from datetime import datetime
@@ -122,18 +138,17 @@ def exibir_menu_principal(tela, desenhar_texto_func, fontes, opcao_selecionada):
     desafios_hoje = []
     for i in range(3):
         indice = (dia_do_ano + i) % len(desafios_possiveis)
-        desafios_hoje.append(f"{i+1}. {desafios_possiveis[indice]}")
+        # Adicionando o marcador visual [ ]
+        desafios_hoje.append(f"[ ] {desafios_possiveis[indice]}")
 
-    # Desafios com design melhorado
+    # Desafios com design melhorado e espaçamento (padding)
     fonte_desafio = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", 11)
-    for i, desafio in enumerate(desafios_hoje):
-        # Cor alternada para cada desafio
-        cor_desafio = (100, 200, 255) if i % 2 == 0 else (150, 220, 255)
-        texto_desafio = fonte_desafio.render(desafio, True, cor_desafio)
-        tela.blit(texto_desafio, (x_janela + 15, y_janela + 30 + (i * 28)))
-
-
+    y_offset_desafios = y_janela + 45 # Aumentado o espaço entre o título e o primeiro desafio
     
+    for i, desafio in enumerate(desafios_hoje):
+        texto_desafio = fonte_desafio.render(desafio, True, BEGE_CLARO)
+        tela.blit(texto_desafio, (x_janela + 20, y_offset_desafios + (i * 28))) # +20 de margem esquerda
+
 
 def botao_escalonado(tela):
     largura_tela, altura_tela = tela.get_size()
