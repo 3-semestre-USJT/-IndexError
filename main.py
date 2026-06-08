@@ -151,6 +151,10 @@ escudo_ativo = False  # Se o jogador tem escudo ativo
 opcoes_removidas = []  # Opções erradas removidas pelo powerup
 ultimo_uso_powerup = 0  # Timestamp do último uso de powerup (para limitar spam)
 cooldown_powerup = 1.0  # Cooldown em segundos entre usos
+powerups_usados_total = 0  # Total de powerups usados pelo jogador (para conquistas)
+desafios_diarios_completados_total = 0  # Total de desafios diários completados (para conquistas)
+tempo_resposta_inicio = 0  # Tempo de início da resposta (para conquistas de tempo)
+combo_maximo_sem_erros = 0  # Combo máximo alcançado sem erros na partida atual
 
 # Sistema de Popup de Conquistas (estilo Xbox)
 popup_conquista_ativo = False
@@ -548,6 +552,7 @@ while True:
                         tempo_partida_inicio = time.time()
                         estado_Atual = TIME_ATTACK
                         parar_menu()
+                        powerups_usados_total = 0
                     elif opcao_menu == 3:  # quarto botao - Config
                         tocar_botao()
                         estado_Atual = OPCOES
@@ -577,6 +582,7 @@ while True:
                         tempo_partida_inicio = time.time()
                         estado_Atual = jogando
                         parar_menu()
+                        powerups_usados_total = 0
                     elif tutorial_opcao_selecionada == 1:  # Tutorial Web
                         webbrowser.open("https://index-error-web.vercel.app/")
                 elif evento.key == pygame.K_ESCAPE:
@@ -633,6 +639,7 @@ while True:
                     deslocamento_x = 0
                     tempo_partida_inicio = time.time()
                     parar_menu()
+                    powerups_usados_total = 0
                 elif acao == "config":
                     tocar_botao()
                     estado_Atual = OPCOES
@@ -765,6 +772,8 @@ while True:
                     escudo_ativo = False
                     opcoes_removidas = []
                     gerenciador_powerups.limpar_powerups()
+                    powerups_usados_total = 0
+                    combo_maximo_sem_erros = 0
                     
                     desafio = logic.obter_novo_desafio(sistema_pontos.combo)
                     tempo_restante = sistema_pontos.calcular_tempo_limite()
@@ -773,6 +782,7 @@ while True:
                     
                     # Feature: Rastrear tempo de início
                     tempo_partida_inicio = time.time()
+                    tempo_resposta_inicio = time.time()
                     
                     # Feature: Verificar desafio diário
                     sistema_pontos.verificar_desafio_diario()
@@ -867,6 +877,7 @@ while True:
                             aplicar_efeito_powerup(powerup.tipo)
                             gerenciador_powerups.remover_powerup(0)
                             ultimo_uso_powerup = time.time()
+                            powerups_usados_total += 1
                 elif evento.key == pygame.K_2:
                     # Verificar cooldown e se tem powerups
                     if time.time() - ultimo_uso_powerup >= cooldown_powerup and gerenciador_powerups.obter_quantidade() > 1:
@@ -876,6 +887,7 @@ while True:
                             aplicar_efeito_powerup(powerup.tipo)
                             gerenciador_powerups.remover_powerup(1)
                             ultimo_uso_powerup = time.time()
+                            powerups_usados_total += 1
                 elif evento.key == pygame.K_3:
                     # Verificar cooldown e se tem powerups
                     if time.time() - ultimo_uso_powerup >= cooldown_powerup and gerenciador_powerups.obter_quantidade() > 2:
@@ -885,6 +897,7 @@ while True:
                             aplicar_efeito_powerup(powerup.tipo)
                             gerenciador_powerups.remover_powerup(2)
                             ultimo_uso_powerup = time.time()
+                            powerups_usados_total += 1
 
                 # Tutorial In-Game - Avançar com ESPAÇO
                 elif evento.key == pygame.K_SPACE and tutorial_in_game_ativo:
@@ -909,24 +922,135 @@ while True:
                             mostrar_popup_conquista(f"SUBIU PARA NÍVEL {gerenciador_niveis.nivel}!")
                         
                         # Feature: Achievements - Verificar conquistas (expandido)
-                        if sistema_pontos.combo == 500:
+                        if sistema_pontos.combo >= 100:
+                            if gerenciador_achievements.desbloquear("combo_100"):
+                                mostrar_popup_conquista("COMBO 100!")
+                        if sistema_pontos.combo >= 500:
                             if gerenciador_achievements.desbloquear("combo_500"):
                                 mostrar_popup_conquista("COMBO 500!")
-                        if sistema_pontos.combo == 1000:
+                        if sistema_pontos.combo >= 1000:
                             if gerenciador_achievements.desbloquear("combo_1000"):
                                 mostrar_popup_conquista("COMBO 1000!")
-                        if sistema_pontos.acertos_totais == 20:
+                        if sistema_pontos.combo >= 2000:
+                            if gerenciador_achievements.desbloquear("combo_2000"):
+                                mostrar_popup_conquista("COMBO LENDÁRIO!")
+                        if sistema_pontos.combo >= 5000:
+                            if gerenciador_achievements.desbloquear("combo_5000"):
+                                mostrar_popup_conquista("COMBO DIVINO!")
+                        if sistema_pontos.acertos_totais >= 10:
+                            if gerenciador_achievements.desbloquear("10_acertos"):
+                                mostrar_popup_conquista("10 ACERTOS!")
+                        if sistema_pontos.acertos_totais >= 20:
                             if gerenciador_achievements.desbloquear("20_acertos"):
                                 mostrar_popup_conquista("20 ACERTOS!")
-                        if sistema_pontos.acertos_totais == 50:
+                        if sistema_pontos.acertos_totais >= 50:
                             if gerenciador_achievements.desbloquear("50_acertos"):
                                 mostrar_popup_conquista("50 ACERTOS!")
-                        if sistema_pontos.acertos_totais == 10 and sistema_pontos.erros_totais == 0:
+                        if sistema_pontos.acertos_totais >= 100:
+                            if gerenciador_achievements.desbloquear("100_acertos"):
+                                mostrar_popup_conquista("100 ACERTOS!")
+                        if sistema_pontos.acertos_totais >= 200:
+                            if gerenciador_achievements.desbloquear("200_acertos"):
+                                mostrar_popup_conquista("DEUS DO JOGO!")
+                        if sistema_pontos.acertos_totais >= 5 and sistema_pontos.erros_totais == 0:
+                            if gerenciador_achievements.desbloquear("sem_erros_5"):
+                                mostrar_popup_conquista("SEM ERROS 5!")
+                        if sistema_pontos.acertos_totais >= 10 and sistema_pontos.erros_totais == 0:
                             if gerenciador_achievements.desbloquear("sem_erros_10"):
                                 mostrar_popup_conquista("SEM ERROS 10!")
+                        if sistema_pontos.acertos_totais >= 20 and sistema_pontos.erros_totais == 0:
+                            if gerenciador_achievements.desbloquear("sem_erros_20"):
+                                mostrar_popup_conquista("SEM ERROS 20!")
+                        if sistema_pontos.acertos_totais >= 30 and sistema_pontos.erros_totais == 0:
+                            if gerenciador_achievements.desbloquear("sem_erros_30"):
+                                mostrar_popup_conquista("PERFEIÇÃO ABSOLUTA!")
+                        
+                        # Feature: Achievements - Rastrear combo máximo sem erros
+                        if sistema_pontos.combo > combo_maximo_sem_erros:
+                            combo_maximo_sem_erros = sistema_pontos.combo
+                        if combo_maximo_sem_erros >= 10:
+                            if gerenciador_achievements.desbloquear("combo_perfeito_10"):
+                                mostrar_popup_conquista("COMBO PERFEITO 10!")
+                        if combo_maximo_sem_erros >= 25:
+                            if gerenciador_achievements.desbloquear("combo_perfeito_25"):
+                                mostrar_popup_conquista("COMBO PERFEITO 25!")
+                        if combo_maximo_sem_erros >= 50:
+                            if gerenciador_achievements.desbloquear("combo_perfeito_50"):
+                                mostrar_popup_conquista("COMBO PERFEITO 50!")
+                        if sistema_pontos.score >= 1000:
+                            if gerenciador_achievements.desbloquear("score_1000"):
+                                mostrar_popup_conquista("1000 PONTOS!")
+                        if sistema_pontos.score >= 5000:
+                            if gerenciador_achievements.desbloquear("score_5000"):
+                                mostrar_popup_conquista("5000 PONTOS!")
+                        if sistema_pontos.score >= 10000:
+                            if gerenciador_achievements.desbloquear("score_10000"):
+                                mostrar_popup_conquista("10000 PONTOS!")
+                        if sistema_pontos.score >= 25000:
+                            if gerenciador_achievements.desbloquear("score_25000"):
+                                mostrar_popup_conquista("25000 PONTOS!")
+                        if sistema_pontos.score >= 50000:
+                            if gerenciador_achievements.desbloquear("score_50000"):
+                                mostrar_popup_conquista("50000 PONTOS!")
+                        if sistema_pontos.score >= 100000:
+                            if gerenciador_achievements.desbloquear("score_100000"):
+                                mostrar_popup_conquista("100000 PONTOS!")
                         if sistema_pontos.score > sistema_pontos.high_score:
                             if gerenciador_achievements.desbloquear("recordista"):
                                 mostrar_popup_conquista("RECORDISTA!")
+                        
+                        # Feature: Achievements - Verificar conquistas de powerups
+                        if powerups_usados_total >= 5:
+                            if gerenciador_achievements.desbloquear("powerup_5"):
+                                mostrar_popup_conquista("COLETOR INICIANTE!")
+                        if powerups_usados_total >= 10:
+                            if gerenciador_achievements.desbloquear("powerup_10"):
+                                mostrar_popup_conquista("COLETOR!")
+                        if powerups_usados_total >= 25:
+                            if gerenciador_achievements.desbloquear("powerup_25"):
+                                mostrar_popup_conquista("MESTRE DOS POWERUPS!")
+                        if powerups_usados_total >= 50:
+                            if gerenciador_achievements.desbloquear("powerup_50"):
+                                mostrar_popup_conquista("SENHOR DOS POWERUPS!")
+                        if powerups_usados_total >= 100:
+                            if gerenciador_achievements.desbloquear("powerup_100"):
+                                mostrar_popup_conquista("DEUS DOS POWERUPS!")
+                        
+                        # Feature: Achievements - Verificar conquistas de nível
+                        if gerenciador_niveis.nivel >= 10:
+                            if gerenciador_achievements.desbloquear("nivel_10"):
+                                mostrar_popup_conquista("NÍVEL 10!")
+                        if gerenciador_niveis.nivel >= 25:
+                            if gerenciador_achievements.desbloquear("nivel_25"):
+                                mostrar_popup_conquista("NÍVEL 25!")
+                        if gerenciador_niveis.nivel >= 50:
+                            if gerenciador_achievements.desbloquear("nivel_50"):
+                                mostrar_popup_conquista("NÍVEL 50!")
+                        if gerenciador_niveis.nivel >= 100:
+                            if gerenciador_achievements.desbloquear("nivel_100"):
+                                mostrar_popup_conquista("NÍVEL 100!")
+                        
+                        # Feature: Achievements - Verificar conquistas de dificuldade
+                        if gerenciador_dificuldade.obter_nome() == "DIFICIL":
+                            if sistema_pontos.score >= 50:
+                                if gerenciador_achievements.desbloquear("dificil_50_pontos"):
+                                    mostrar_popup_conquista("DIFICULDADE ALTA!")
+                            if sistema_pontos.score >= 100:
+                                if gerenciador_achievements.desbloquear("dificil_100_pontos"):
+                                    mostrar_popup_conquista("DIFICULDADE EXTREMA!")
+                            if sistema_pontos.score >= 200:
+                                if gerenciador_achievements.desbloquear("dificil_200_pontos"):
+                                    mostrar_popup_conquista("IMPOSSÍVEL!")
+                            if sistema_pontos.score >= 500:
+                                if gerenciador_achievements.desbloquear("dificil_500_pontos"):
+                                    mostrar_popup_conquista("DESAFIO SUPREMO!")
+                        if gerenciador_dificuldade.obter_nome() == "FACIL":
+                            if sistema_pontos.score >= 100:
+                                if gerenciador_achievements.desbloquear("facil_100_pontos"):
+                                    mostrar_popup_conquista("CAMINHO FÁCIL!")
+                            if sistema_pontos.score >= 500:
+                                if gerenciador_achievements.desbloquear("facil_500_pontos"):
+                                    mostrar_popup_conquista("MESTRE DO FÁCIL!")
                         
                         # Feature: Powerups - Chance de aparecer powerup
                         if gerenciador_powerups.deveria_aparecer_powerup():
@@ -936,6 +1060,19 @@ while True:
                         
                         # Feature: Animações - Criar efeito de acerto
                         gerador_particulas.criar_trail(largura // 2, altura // 2, (0, 255, 100), 10)
+                        
+                        # Feature: Achievements - Verificar conquistas de tempo de resposta
+                        tempo_resposta = time.time() - tempo_resposta_inicio
+                        if tempo_resposta < 10.0:
+                            if gerenciador_achievements.desbloquear("tempo_10s"):
+                                mostrar_popup_conquista("RELÂMPAGO!")
+                        if tempo_resposta < 5.0:
+                            if gerenciador_achievements.desbloquear("tempo_5s"):
+                                mostrar_popup_conquista("SUPERSSÔNICO!")
+                        if tempo_resposta < 3.0:
+                            if gerenciador_achievements.desbloquear("tempo_3s"):
+                                mostrar_popup_conquista("LUZ!")
+                        tempo_resposta_inicio = time.time()  # Resetar para próxima resposta
                         
                         desafio = logic.obter_novo_desafio(sistema_pontos.combo)
                         tempo_restante = sistema_pontos.calcular_tempo_limite()
@@ -965,15 +1102,44 @@ while True:
                             if sistema_pontos.score > 0:
                                 if gerenciador_achievements.desbloquear("5_partidas"):
                                     mostrar_popup_conquista("5 PARTIDAS!")
-                            if gerenciador_historico.obter_estatisticas_gerais().get("total_partidas", 0) >= 50:
+                            estatisticas = gerenciador_historico.obter_estatisticas_gerais()
+                            total_partidas = estatisticas.get("total_partidas", 0)
+                            if total_partidas >= 10:
+                                if gerenciador_achievements.desbloquear("10_partidas"):
+                                    mostrar_popup_conquista("10 PARTIDAS!")
+                            if total_partidas >= 50:
                                 if gerenciador_achievements.desbloquear("50_partidas"):
                                     mostrar_popup_conquista("50 PARTIDAS!")
+                            if total_partidas >= 100:
+                                if gerenciador_achievements.desbloquear("100_partidas"):
+                                    mostrar_popup_conquista("100 PARTIDAS!")
+                            if total_partidas >= 200:
+                                if gerenciador_achievements.desbloquear("200_partidas"):
+                                    mostrar_popup_conquista("200 PARTIDAS!")
+                            if total_partidas >= 500:
+                                if gerenciador_achievements.desbloquear("500_partidas"):
+                                    mostrar_popup_conquista("500 PARTIDAS!")
+                            
+                            # Feature: Achievements - Verificar conquistas de sobrevivência
+                            if sistema_pontos.obter_vidas() == 1:
+                                if gerenciador_achievements.desbloquear("sobrevivente"):
+                                    mostrar_popup_conquista("SOBREVIVENTE!")
+                            if sistema_pontos.obter_vidas() == 3:
+                                if gerenciador_achievements.desbloquear("invencivel"):
+                                    mostrar_popup_conquista("INVENCÍVEL!")
 
                             # Feature: Desafio Diário - Completar se atingir meta
                             if sistema_pontos.score >= 1000 and not sistema_pontos.desafio_diario_completado:
                                 sistema_pontos.completar_desafio_diario()
+                                desafios_diarios_completados_total += 1
                                 if gerenciador_achievements.desbloquear("velocista"):
                                     mostrar_popup_conquista("VELOCISTA!")
+                                if desafios_diarios_completados_total >= 7:
+                                    if gerenciador_achievements.desbloquear("desafio_diario_7"):
+                                        mostrar_popup_conquista("SEMANA DE DESAFIOS!")
+                                if desafios_diarios_completados_total >= 30:
+                                    if gerenciador_achievements.desbloquear("desafio_diario_30"):
+                                        mostrar_popup_conquista("MÊS DE DESAFIOS!")
 
                             if sistema_pontos.verificar_novo_recorde():
                                 if gerenciador_achievements.desbloquear("primeiro_recorde"):
@@ -1053,6 +1219,21 @@ while True:
                         time_attack_desafios_completados += 1
                         sistema_pontos.registrar_acerto(multiplicador_powerup_ativo)
                         gerador_particulas.criar_trail(largura // 2, altura // 2, (0, 255, 100), 10)
+                        
+                        # Feature: Achievements - Verificar conquistas de Time Attack
+                        if time_attack_desafios_completados >= 30:
+                            if gerenciador_achievements.desbloquear("time_attack_30"):
+                                mostrar_popup_conquista("TIME ATTACK INICIANTE!")
+                        if time_attack_desafios_completados >= 50:
+                            if gerenciador_achievements.desbloquear("time_attack_50"):
+                                mostrar_popup_conquista("TIME ATTACK MESTRE!")
+                        if time_attack_desafios_completados >= 75:
+                            if gerenciador_achievements.desbloquear("time_attack_75"):
+                                mostrar_popup_conquista("TIME ATTACK LENDÁRIO!")
+                        if time_attack_desafios_completados >= 100:
+                            if gerenciador_achievements.desbloquear("time_attack_100"):
+                                mostrar_popup_conquista("TIME ATTACK SUPREMO!")
+                        
                         desafio = logic.obter_novo_desafio(time_attack_acertos)
                     else:
                         time_attack_acertos = 0  # Reseta combo no Time Attack
