@@ -20,10 +20,14 @@ class Particula(pygame.sprite.Sprite):
         vida: Tempo de vida em frames
         vida_max: Tempo máximo de vida
         cor: Cor da partícula
+        tamanho: Tamanho da partícula
+        gravidade: Gravidade aplicada à partícula
+        tipo: Tipo de partícula (circulo, estrela, quadrado)
     """
     
     def __init__(self, x: float, y: float, vx: float, vy: float, 
-                 cor: tuple, vida: int = 30):
+                 cor: tuple, vida: int = 30, tamanho: int = 5, 
+                 gravidade: float = 0.0, tipo: str = "circulo"):
         super().__init__()
         self.x = x
         self.y = y
@@ -32,7 +36,11 @@ class Particula(pygame.sprite.Sprite):
         self.cor = cor
         self.vida = vida
         self.vida_max = vida
-        self.tamanho = 5
+        self.tamanho = tamanho
+        self.tamanho_inicial = tamanho
+        self.gravidade = gravidade
+        self.tipo = tipo
+        self.brilho = random.randint(0, 50)  # Brilho aleatório
         
         # Cria a imagem da partícula
         self.atualizar_imagem()
@@ -41,15 +49,50 @@ class Particula(pygame.sprite.Sprite):
         """Atualiza a imagem com base na vida restante."""
         # Fade out baseado na vida
         alpha = int((self.vida / self.vida_max) * 255)
-        self.image = pygame.Surface((self.tamanho, self.tamanho), pygame.SRCALPHA)
+        
+        # Reduz tamanho gradualmente
+        self.tamanho = int(self.tamanho_inicial * (self.vida / self.vida_max))
+        if self.tamanho < 1:
+            self.tamanho = 1
+        
+        self.image = pygame.Surface((self.tamanho * 2, self.tamanho * 2), pygame.SRCALPHA)
         cor_com_alpha = (*self.cor, alpha)
-        pygame.draw.circle(self.image, cor_com_alpha, (self.tamanho // 2, self.tamanho // 2), self.tamanho // 2)
+        
+        # Adicionar brilho
+        cor_brilho = (
+            min(255, self.cor[0] + self.brilho),
+            min(255, self.cor[1] + self.brilho),
+            min(255, self.cor[2] + self.brilho),
+            alpha
+        )
+        
+        centro = (self.tamanho, self.tamanho)
+        
+        if self.tipo == "circulo":
+            pygame.draw.circle(self.image, cor_brilho, centro, self.tamanho)
+            pygame.draw.circle(self.image, cor_com_alpha, centro, self.tamanho // 2)
+        elif self.tipo == "quadrado":
+            pygame.draw.rect(self.image, cor_brilho, (0, 0, self.tamanho * 2, self.tamanho * 2))
+            pygame.draw.rect(self.image, cor_com_alpha, (self.tamanho // 2, self.tamanho // 2, self.tamanho, self.tamanho))
+        elif self.tipo == "estrela":
+            # Desenhar estrela simples
+            pontos = []
+            for i in range(5):
+                angulo_ext = i * 2 * math.pi / 5 - math.pi / 2
+                angulo_int = angulo_ext + math.pi / 5
+                pontos.append((self.tamanho + self.tamanho * math.cos(angulo_ext), 
+                              self.tamanho + self.tamanho * math.sin(angulo_ext)))
+                pontos.append((self.tamanho + self.tamanho // 2 * math.cos(angulo_int), 
+                              self.tamanho + self.tamanho // 2 * math.sin(angulo_int)))
+            pygame.draw.polygon(self.image, cor_brilho, pontos)
+        
         self.rect = self.image.get_rect(center=(int(self.x), int(self.y)))
     
     def update(self):
         """Atualiza a posição e vida da partícula."""
         self.x += self.vx
         self.y += self.vy
+        self.vy += self.gravidade  # Aplicar gravidade
         self.vida -= 1
         self.atualizar_imagem()
         
@@ -78,13 +121,20 @@ class GeradorParticulas:
             quantidade: Número de partículas
             velocidade_max: Velocidade máxima das partículas
         """
+        tipos_particulas = ["circulo", "quadrado", "estrela"]
         for _ in range(quantidade):
             angulo = random.uniform(0, 2 * math.pi)
             velocidade = random.uniform(0, velocidade_max)
             vx = velocidade * math.cos(angulo)
             vy = velocidade * math.sin(angulo)
             
-            particula = Particula(x, y, vx, vy, cor, vida=random.randint(20, 40))
+            # Variação de tamanho e gravidade
+            tamanho = random.randint(3, 8)
+            gravidade = random.uniform(0.1, 0.3)
+            tipo = random.choice(tipos_particulas)
+            
+            particula = Particula(x, y, vx, vy, cor, vida=random.randint(30, 50), 
+                                 tamanho=tamanho, gravidade=gravidade, tipo=tipo)
             self.grupo_particulas.add(particula)
     
     def criar_trail(self, x: float, y: float, cor: tuple = (0, 255, 100), 
@@ -97,10 +147,57 @@ class GeradorParticulas:
             cor: Cor do trail
             quantidade: Número de partículas
         """
+        tipos_particulas = ["circulo", "quadrado"]
         for _ in range(quantidade):
-            vx = random.uniform(-2, 2)
-            vy = random.uniform(-2, 2)
-            particula = Particula(x, y, vx, vy, cor, vida=15)
+            vx = random.uniform(-3, 3)
+            vy = random.uniform(-3, 3)
+            tamanho = random.randint(2, 5)
+            tipo = random.choice(tipos_particulas)
+            
+            particula = Particula(x, y, vx, vy, cor, vida=20, tamanho=tamanho, 
+                                 gravidade=0.05, tipo=tipo)
+            self.grupo_particulas.add(particula)
+    
+    def criar_chuva_estrelas(self, x: float, y: float, cor: tuple = (255, 255, 100), 
+                             quantidade: int = 15):
+        """
+        Cria um efeito de chuva de estrelas (para combos altos).
+        
+        Args:
+            x, y: Posição
+            cor: Cor das estrelas
+            quantidade: Número de estrelas
+        """
+        for _ in range(quantidade):
+            vx = random.uniform(-4, 4)
+            vy = random.uniform(-6, -2)  # Movimento para cima
+            tamanho = random.randint(4, 7)
+            
+            particula = Particula(x, y, vx, vy, cor, vida=random.randint(40, 60), 
+                                 tamanho=tamanho, gravidade=-0.05, tipo="estrela")
+            self.grupo_particulas.add(particula)
+    
+    def criar_confete(self, x: float, y: float, quantidade: int = 30):
+        """
+        Cria um efeito de confete (para conquistas).
+        
+        Args:
+            x, y: Posição
+            quantidade: Número de partículas
+        """
+        cores = [(255, 100, 100), (100, 255, 100), (100, 100, 255), 
+                 (255, 255, 100), (255, 100, 255), (100, 255, 255)]
+        for _ in range(quantidade):
+            angulo = random.uniform(0, 2 * math.pi)
+            velocidade = random.uniform(2, 8)
+            vx = velocidade * math.cos(angulo)
+            vy = velocidade * math.sin(angulo)
+            cor = random.choice(cores)
+            tamanho = random.randint(3, 6)
+            tipo = random.choice(["circulo", "quadrado"])
+            
+            particula = Particula(x, y, vx, vy, cor, vida=random.randint(50, 70), 
+                                 tamanho=tamanho, gravidade=0.2, tipo=tipo)
             self.grupo_particulas.add(particula)
     
     def atualizar(self):

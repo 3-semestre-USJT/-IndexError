@@ -264,6 +264,8 @@ def mostrar_popup_conquista(nome_conquista):
     popup_conquista_tempo_inicio = time.time()
     # Tocar som de conquista (se existir)
     tocar_botao()  # Usando som de botão temporariamente
+    # Feature: Animações - Confete ao desbloquear conquista
+    gerador_particulas.criar_confete(largura // 2, altura // 2, 40)
 
 def mostrar_popup_powerup(tipo_powerup):
     """
@@ -914,7 +916,10 @@ while True:
                         if sistema_pontos.combo % 5 == 0:  # A cada 5 de combo
                             # Partículas coloridas baseadas no combo
                             cor_combo = min(255, sistema_pontos.combo * 5)
-                            gerador_particulas.criar_explosao(largura // 2, altura // 2, (cor_combo, 255 - cor_combo // 2, 100), 20)
+                            gerador_particulas.criar_explosao(largura // 2, altura // 2, (cor_combo, 255 - cor_combo // 2, 100), 30)
+                        if sistema_pontos.combo % 10 == 0:  # A cada 10 de combo
+                            # Chuva de estrelas para combos altos
+                            gerador_particulas.criar_chuva_estrelas(largura // 2, altura // 2, (255, 255, 100), 20)
                         
                         # Feature: Sistema de Níveis - Adicionar XP
                         xp_ganho = int(10 * sistema_pontos.multiplicador)
@@ -1059,7 +1064,8 @@ while True:
                             mostrar_popup_powerup(tipo_powerup)
                         
                         # Feature: Animações - Criar efeito de acerto
-                        gerador_particulas.criar_trail(largura // 2, altura // 2, (0, 255, 100), 10)
+                        gerador_particulas.criar_trail(largura // 2, altura // 2, (0, 255, 100), 15)
+                        gerador_particulas.criar_explosao(largura // 2, altura // 2, (0, 255, 100), 15)
                         
                         # Feature: Achievements - Verificar conquistas de tempo de resposta
                         tempo_resposta = time.time() - tempo_resposta_inicio
@@ -1429,6 +1435,15 @@ while True:
             fonte_instrucao = pygame.font.Font(CAMINHO_FONTE, 14)
             texto_instrucao = fonte_instrucao.render("Pressione ESPAÇO para pular", True, (150, 200, 255))
             tela.blit(texto_instrucao, (x_tutorial + 25, y_tutorial + 70))
+        
+        # Feature: Animações - Desenhar partículas no jogo principal
+        gerador_particulas.atualizar()
+        gerador_particulas.desenhar(tela)
+        
+        # Feature: Animações - Desenhar transição se ativa
+        if animador_transicao.esta_ativa():
+            animador_transicao.atualizar()
+            animador_transicao.desenhar_overlay_fade(tela)
 
     elif estado_Atual == TIME_ATTACK:
         exibir_gameplay(tela, desenhar_texto, fontes_jogo, desafio, sistema_pontos, tempo_restante, imagem_gameplay, animacao_perso, (deslocamento_x, deslocamento_y), opcoes_removidas, gerenciador_niveis.nivel, gerenciador_niveis.obter_percentual_nivel())
