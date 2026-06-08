@@ -1337,69 +1337,80 @@ while True:
     elif estado_Atual == jogando:
         exibir_gameplay(tela, desenhar_texto, fontes_jogo, desafio, sistema_pontos, tempo_restante, imagem_gameplay, animacao_perso, (deslocamento_x, deslocamento_y), opcoes_removidas, gerenciador_niveis.nivel, gerenciador_niveis.obter_percentual_nivel())
 
-        # HUD com fundo para melhor visibilidade
+        # ==========================================
+        #             HUD DA GAMEPLAY
+        # ==========================================
         hud_x = 20
         hud_y = 20
-        hud_largura = 300
-        hud_altura = 180
+        hud_largura = 320
+        hud_altura = 210
 
-        pygame.draw.rect(tela, (0, 0, 0, 180), (hud_x, hud_y, hud_largura, hud_altura))
-        pygame.draw.rect(tela, (100, 100, 255), (hud_x, hud_y, hud_largura, hud_altura), 2)
+        try:
+            img_placa_hud = pygame.image.load("assets/images/placa_desafios.png").convert_alpha()
+            img_placa_hud = pygame.transform.smoothscale(img_placa_hud, (hud_largura, hud_altura))
+            tela.blit(img_placa_hud, (hud_x, hud_y))
+        except (pygame.error, FileNotFoundError):
+            MARROM_BASE = (139, 90, 43)
+            MARROM_ESCURO = (92, 58, 33)
+            pygame.draw.rect(tela, MARROM_BASE, (hud_x, hud_y, hud_largura, hud_altura))
+            pygame.draw.rect(tela, MARROM_ESCURO, (hud_x, hud_y, hud_largura, hud_altura), 4)
+            pygame.draw.line(tela, MARROM_ESCURO, (hud_x + 10, hud_y + 35), (hud_x + hud_largura - 10, hud_y + 35), 2)
+            pygame.draw.line(tela, MARROM_ESCURO, (hud_x + 10, hud_y + hud_altura - 15), (hud_x + hud_largura - 10, hud_y + hud_altura - 15), 2)
 
-        # Feature: Mostrar vidas
-        vidas_cor = VERDE_VIBRANTE if sistema_pontos.obter_vidas() > 1 else VERMELHO_VIVO
-        fonte_hud = pygame.font.Font(CAMINHO_FONTE, 16)
-        texto_vidas = fonte_hud.render(f"VIDAS: {sistema_pontos.obter_vidas()}", True, vidas_cor)
-        tela.blit(texto_vidas, (hud_x + 10, hud_y + 10))
+        BEGE_CLARO = (245, 222, 179)
+        DOURADO = (218, 165, 32)
+        VERDE_MADEIRA = (144, 238, 144)
+        VERMELHO_MADEIRA = (255, 99, 71)
 
-        # Feature: Sistema de Níveis - Mostrar nível
-        texto_nivel = fonte_hud.render(f"NÍVEL: {gerenciador_niveis.nivel}", True, (255, 215, 0))
-        tela.blit(texto_nivel, (hud_x + 10, hud_y + 30))
+        fonte_hud = pygame.font.Font(CAMINHO_FONTE, 12)
 
-        # Barra de XP
-        largura_barra_xp = hud_largura - 20
-        altura_barra_xp = 5
-        x_barra_xp = hud_x + 10
-        y_barra_xp = hud_y + 50
-        percentual_xp = gerenciador_niveis.obter_percentual_nivel()
-        pygame.draw.rect(tela, (50, 50, 50), (x_barra_xp, y_barra_xp, largura_barra_xp, altura_barra_xp))
-        pygame.draw.rect(tela, (255, 215, 0), (x_barra_xp, y_barra_xp, int(largura_barra_xp * percentual_xp / 100), altura_barra_xp))
+        # VIDAS (Canto superior esquerdo)
+        cor_vidas = VERDE_MADEIRA if sistema_pontos.obter_vidas() > 1 else VERMELHO_MADEIRA
+        texto_vidas = fonte_hud.render(f"VIDAS: {sistema_pontos.obter_vidas()}", True, cor_vidas)
+        tela.blit(texto_vidas, (hud_x + 20, hud_y + 15))
 
-        # Mostrar score
-        texto_score = fonte_hud.render(f"SCORE: {sistema_pontos.score}", True, AMARELO)
-        tela.blit(texto_score, (hud_x + 10, hud_y + 60))
-
-        # Mostrar combo
-        texto_combo = fonte_hud.render(f"COMBO: {sistema_pontos.combo}", True, (255, 100, 200))
-        tela.blit(texto_combo, (hud_x + 10, hud_y + 80))
-
-        # Mostrar tempo apenas se não for tutorial
+        # TEMPO (Canto superior direito)
         if not tutorial_in_game_ativo:
-            texto_tempo = fonte_hud.render(f"TEMPO: {tempo_restante:.1f}s", True, (100, 200, 255))
-            tela.blit(texto_tempo, (hud_x + 10, hud_y + 100))
+            cor_tempo = BEGE_CLARO if tempo_restante > 10 else VERMELHO_MADEIRA
+            texto_tempo = fonte_hud.render(f"TEMPO: {tempo_restante:.1f}s", True, cor_tempo)
+            tela.blit(texto_tempo, (hud_x + 170, hud_y + 15))
 
-        # Powerups disponíveis
+        # NÍVEL
+        texto_nivel = fonte_hud.render(f"NÍVEL: {gerenciador_niveis.nivel}", True, DOURADO)
+        tela.blit(texto_nivel, (hud_x + 20, hud_y + 45))
+
+        # BARRA DE XP (Embutida na madeira)
+        largura_barra_xp = hud_largura - 40
+        altura_barra_xp = 6
+        x_barra_xp = hud_x + 20
+        y_barra_xp = hud_y + 65
+        percentual_xp = gerenciador_niveis.obter_percentual_nivel()
+        pygame.draw.rect(tela, (70, 40, 20), (x_barra_xp, y_barra_xp, largura_barra_xp, altura_barra_xp))
+        pygame.draw.rect(tela, DOURADO, (x_barra_xp, y_barra_xp, int(largura_barra_xp * percentual_xp / 100), altura_barra_xp))
+
+        # SCORE E COMBO
+        texto_score = fonte_hud.render(f"SCORE: {sistema_pontos.score}", True, BEGE_CLARO)
+        tela.blit(texto_score, (hud_x + 20, hud_y + 85))
+
+        texto_combo = fonte_hud.render(f"COMBO: {sistema_pontos.combo}", True, BEGE_CLARO)
+        tela.blit(texto_combo, (hud_x + 170, hud_y + 85))
+
+        # POWERUPS
         powerups_disponiveis = gerenciador_powerups.obter_quantidade()
         if powerups_disponiveis > 0:
-            texto_powerups = fonte_hud.render(f"POWERUPS: {powerups_disponiveis}", True, (255, 150, 50))
-            if tutorial_in_game_ativo:
-                tela.blit(texto_powerups, (hud_x + 10, hud_y + 100))
-            else:
-                tela.blit(texto_powerups, (hud_x + 10, hud_y + 120))
+            texto_powerups = fonte_hud.render(f"POWERUPS: {powerups_disponiveis}", True, DOURADO)
+            tela.blit(texto_powerups, (hud_x + 20, hud_y + 115))
 
-            # Mostrar powerups específicos disponíveis
-            fonte_desc = pygame.font.Font(CAMINHO_FONTE, 11)
+            fonte_desc = pygame.font.Font(CAMINHO_FONTE, 10)
             powerups_lista = gerenciador_powerups.obter_powerups_ativos()
-            y_offset = 135 if not tutorial_in_game_ativo else 115
-            for i, powerup in enumerate(powerups_lista[:3]):  # Mostrar até 3 powerups
+            y_offset = 135
+            for i, powerup in enumerate(powerups_lista[:3]):
                 info = gerenciador_powerups.obter_info_powerup(powerup.tipo)
                 nome = info.get("nome", "Powerup")
-                tecla = i + 1
-                texto = f"{tecla}: {nome}"
-                cor = info.get("cor", (200, 200, 200))
-                desc_texto = fonte_desc.render(texto, True, cor)
-                tela.blit(desc_texto, (hud_x + 10, hud_y + y_offset))
-                y_offset += 13
+                texto = f"[{i + 1}] {nome}"
+                desc_texto = fonte_desc.render(texto, True, BEGE_CLARO)
+                tela.blit(desc_texto, (hud_x + 20, hud_y + y_offset))
+                y_offset += 15
 
         # Feedback visual de powerup
         if powerup_feedback_ativo:
@@ -1448,56 +1459,65 @@ while True:
     elif estado_Atual == TIME_ATTACK:
         exibir_gameplay(tela, desenhar_texto, fontes_jogo, desafio, sistema_pontos, tempo_restante, imagem_gameplay, animacao_perso, (deslocamento_x, deslocamento_y), opcoes_removidas, gerenciador_niveis.nivel, gerenciador_niveis.obter_percentual_nivel())
 
-        # HUD do Time Attack com fundo
+        # ==========================================
+        #           HUD DO TIME ATTACK
+        # ==========================================
         hud_x = 20
         hud_y = 20
-        hud_largura = 300
-        hud_altura = 180
+        hud_largura = 320
+        hud_altura = 210
 
-        pygame.draw.rect(tela, (0, 0, 0, 180), (hud_x, hud_y, hud_largura, hud_altura))
-        pygame.draw.rect(tela, (255, 50, 50), (hud_x, hud_y, hud_largura, hud_altura), 2)
+        try:
+            img_placa_hud = pygame.image.load("assets/images/placa_desafios.png").convert_alpha()
+            img_placa_hud = pygame.transform.smoothscale(img_placa_hud, (hud_largura, hud_altura))
+            tela.blit(img_placa_hud, (hud_x, hud_y))
+        except (pygame.error, FileNotFoundError):
+            MARROM_BASE = (139, 90, 43)
+            MARROM_ESCURO = (92, 58, 33)
+            pygame.draw.rect(tela, MARROM_BASE, (hud_x, hud_y, hud_largura, hud_altura))
+            pygame.draw.rect(tela, MARROM_ESCURO, (hud_x, hud_y, hud_largura, hud_altura), 4)
+            pygame.draw.line(tela, MARROM_ESCURO, (hud_x + 10, hud_y + 35), (hud_x + hud_largura - 10, hud_y + 35), 2)
+            pygame.draw.line(tela, MARROM_ESCURO, (hud_x + 10, hud_y + hud_altura - 15), (hud_x + hud_largura - 10, hud_y + hud_altura - 15), 2)
 
-        fonte_hud = pygame.font.Font(CAMINHO_FONTE, 16)
+        BEGE_CLARO = (245, 222, 179)
+        VERMELHO_MADEIRA = (255, 99, 71)
+        DOURADO = (218, 165, 32)
+        fonte_hud = pygame.font.Font(CAMINHO_FONTE, 12)
 
-        # Título
-        texto_titulo = fonte_hud.render("TIME ATTACK", True, VERMELHO_VIVO)
-        tela.blit(texto_titulo, (hud_x + 10, hud_y + 10))
+        # TÍTULO TIME ATTACK E TEMPO
+        texto_titulo = fonte_hud.render("TIME ATTACK", True, VERMELHO_MADEIRA)
+        tela.blit(texto_titulo, (hud_x + 20, hud_y + 15))
+        
+        texto_tempo = fonte_hud.render(f"TEMPO: {tempo_restante:.1f}s", True, BEGE_CLARO)
+        tela.blit(texto_tempo, (hud_x + 170, hud_y + 15))
 
-        # Desafios
-        texto_desafios = fonte_hud.render(f"DESAFIOS: {time_attack_desafios_completados}", True, AMARELO)
-        tela.blit(texto_desafios, (hud_x + 10, hud_y + 35))
+        # DESAFIOS COMPLETADOS
+        texto_desafios = fonte_hud.render(f"DESAFIOS: {time_attack_desafios_completados}", True, DOURADO)
+        tela.blit(texto_desafios, (hud_x + 20, hud_y + 45))
 
-        # Combo
-        texto_combo = fonte_hud.render(f"COMBO: {time_attack_acertos}", True, (100, 200, 255))
-        tela.blit(texto_combo, (hud_x + 10, hud_y + 60))
+        # SCORE E COMBO
+        texto_score = fonte_hud.render(f"SCORE: {sistema_pontos.score}", True, BEGE_CLARO)
+        tela.blit(texto_score, (hud_x + 20, hud_y + 75))
 
-        # Score
-        texto_score = fonte_hud.render(f"SCORE: {sistema_pontos.score}", True, (255, 100, 200))
-        tela.blit(texto_score, (hud_x + 10, hud_y + 85))
+        texto_combo = fonte_hud.render(f"COMBO: {time_attack_acertos}", True, BEGE_CLARO)
+        tela.blit(texto_combo, (hud_x + 170, hud_y + 75))
 
-        # Tempo
-        texto_tempo = fonte_hud.render(f"TEMPO: {tempo_restante:.1f}s", True, (100, 255, 100))
-        tela.blit(texto_tempo, (hud_x + 10, hud_y + 110))
-
-        # Powerups disponíveis
+        # POWERUPS
         powerups_disponiveis = gerenciador_powerups.obter_quantidade()
         if powerups_disponiveis > 0:
-            texto_powerups = fonte_hud.render(f"POWERUPS: {powerups_disponiveis}", True, (255, 150, 50))
-            tela.blit(texto_powerups, (hud_x + 10, hud_y + 135))
+            texto_powerups = fonte_hud.render(f"POWERUPS: {powerups_disponiveis}", True, DOURADO)
+            tela.blit(texto_powerups, (hud_x + 20, hud_y + 115))
 
-            # Mostrar powerups específicos disponíveis
-            fonte_desc = pygame.font.Font(CAMINHO_FONTE, 11)
+            fonte_desc = pygame.font.Font(CAMINHO_FONTE, 10)
             powerups_lista = gerenciador_powerups.obter_powerups_ativos()
-            y_offset = 150
-            for i, powerup in enumerate(powerups_lista[:3]):  # Mostrar até 3 powerups
+            y_offset = 135
+            for i, powerup in enumerate(powerups_lista[:3]):
                 info = gerenciador_powerups.obter_info_powerup(powerup.tipo)
                 nome = info.get("nome", "Powerup")
-                tecla = i + 1
-                texto = f"{tecla}: {nome}"
-                cor = info.get("cor", (200, 200, 200))
-                desc_texto = fonte_desc.render(texto, True, cor)
-                tela.blit(desc_texto, (hud_x + 10, hud_y + y_offset))
-                y_offset += 13
+                texto = f"[{i + 1}] {nome}"
+                desc_texto = fonte_desc.render(texto, True, BEGE_CLARO)
+                tela.blit(desc_texto, (hud_x + 20, hud_y + y_offset))
+                y_offset += 15
 
         # Feedback visual de powerup
         if powerup_feedback_ativo:
