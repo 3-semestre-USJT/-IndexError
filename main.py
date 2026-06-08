@@ -415,11 +415,16 @@ for dados in CONFIG_EASTER_EGGS:
     gerenciador_eggs.adicionar(
         EasterEggTeclado(dados["palavra"], dados["img"], dados["som"]))
 
+musica_intro_tocada = False
+
+
+
 while True:
     if estado_Atual == intro:
         # Tocar música própria da intro
-        if som.musica_ativada:
+        if som.musica_ativada and not musica_intro_tocada:
             som.tocar_intro()
+            musica_intro_tocada = True
 
         # Atualizar animação da intro
         if intro_animacao_ativa:
