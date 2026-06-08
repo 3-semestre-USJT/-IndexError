@@ -108,6 +108,7 @@ pagina_conquistas = 0
 pagina_desafios = 0
 tutorial_letra_atual = 0
 tutorial_tempo_ultima_letra = 0
+tutorial_tempo_texto_completo = 0  # Tempo quando o texto foi completamente exibido
 
 # Variáveis do Menu de Seleção de Tutorial
 tutorial_opcao_selecionada = 0  # 0 = In-Game, 1 = Web
@@ -325,7 +326,7 @@ def iniciar_tutorial_in_game():
     """
     Inicia o tutorial interativo in-game.
     """
-    global tutorial_in_game_ativo, tutorial_passo_atual, tutorial_mensagem, tutorial_mensagem_visivel, tutorial_mostrar, tutorial_letra_atual, tutorial_tempo_ultima_letra
+    global tutorial_in_game_ativo, tutorial_passo_atual, tutorial_mensagem, tutorial_mensagem_visivel, tutorial_mostrar, tutorial_letra_atual, tutorial_tempo_ultima_letra, tutorial_tempo_texto_completo
     tutorial_in_game_ativo = True
     tutorial_passo_atual = 0
     tutorial_mensagem = "Bem-vindo ao tutorial! Use as setas para mover o personagem."
@@ -333,12 +334,13 @@ def iniciar_tutorial_in_game():
     tutorial_mostrar = True
     tutorial_letra_atual = 0
     tutorial_tempo_ultima_letra = time.time()
+    tutorial_tempo_texto_completo = 0
 
 def avancar_tutorial():
     """
     Avança para o próximo passo do tutorial.
     """
-    global tutorial_passo_atual, tutorial_mensagem, tutorial_mensagem_visivel, tutorial_letra_atual, tutorial_tempo_ultima_letra, tutorial_in_game_ativo
+    global tutorial_passo_atual, tutorial_mensagem, tutorial_mensagem_visivel, tutorial_letra_atual, tutorial_tempo_ultima_letra, tutorial_in_game_ativo, tutorial_tempo_texto_completo
 
     passos_tutorial = [
         "Bem-vindo ao tutorial! Use as setas para mover o personagem.",
@@ -356,6 +358,7 @@ def avancar_tutorial():
         tutorial_mensagem_visivel = ""
         tutorial_letra_atual = 0
         tutorial_tempo_ultima_letra = time.time()
+        tutorial_tempo_texto_completo = 0  # Resetar timer do auto-skip
     else:
         tutorial_mensagem = ""
         tutorial_mensagem_visivel = ""
@@ -365,8 +368,9 @@ def avancar_tutorial():
 def atualizar_tutorial():
     """
     Atualiza o texto do tutorial aparecendo letra por letra automaticamente.
+    Também implementa auto-skip após 5 segundos quando o texto está completo.
     """
-    global tutorial_mensagem_visivel, tutorial_letra_atual, tutorial_tempo_ultima_letra
+    global tutorial_mensagem_visivel, tutorial_letra_atual, tutorial_tempo_ultima_letra, tutorial_tempo_texto_completo
 
     if not tutorial_mostrar or not tutorial_in_game_ativo:
         return
@@ -377,6 +381,14 @@ def atualizar_tutorial():
             tutorial_mensagem_visivel = tutorial_mensagem[:tutorial_letra_atual + 1]
             tutorial_letra_atual += 1
             tutorial_tempo_ultima_letra = tempo_atual
+        else:
+            # Texto completamente exibido, registrar o tempo se ainda não foi registrado
+            if tutorial_tempo_texto_completo == 0:
+                tutorial_tempo_texto_completo = tempo_atual
+            
+            # Verificar se passaram 5 segundos após o texto completo
+            if tempo_atual - tutorial_tempo_texto_completo >= 5.0:
+                avancar_tutorial()
 
 def desenhar_texto(texto, cor, y_offset, fonte_base, max_largura=750):
     tamanho_atual = fonte_base.get_height()
